@@ -1,0 +1,18 @@
+# Runtime output directory (only ever created in the user's project, never here)
+.gdd/
+
+# OS files
+.DS_Store
+Thumbs.db
+nul
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp

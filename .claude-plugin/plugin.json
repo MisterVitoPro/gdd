@@ -1,0 +1,21 @@
+{
+  "name": "gdd",
+  "description": "Game Doc Forge: multi-agent pipeline that turns a game idea into a comprehensive Game Design Document with optional web research, supplementary documents, and a session index, with user checkpoints throughout. Video games, board games, card games, and tabletop RPGs.",
+  "version": "1.0.0",
+  "author": {
+    "name": "MisterVitoPro"
+  },
+  "license": "MIT",
+  "keywords": [
+    "game-design",
+    "gdd",
+    "game-design-document",
+    "documentation",
+    "multi-agent",
+    "board-game",
+    "video-game",
+    "tabletop",
+    "research"
+  ],
+  "repository": "https://github.com/MisterVitoPro/gdd"
+}

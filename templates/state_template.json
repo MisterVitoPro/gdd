@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "projectName": "",
+  "createdAt": "",
+  "updatedAt": "",
+  "currentStage": "NOT_STARTED",
+  "completedStages": [],
+  "stageOutputs": {
+    "concept": null,
+    "details": null,
+    "researchPlan": null,
+    "historicalResearch": null,
+    "marketResearch": null,
+    "technicalResearch": null,
+    "researchSynthesis": null,
+    "gdd": null,
+    "supplementPlan": null,
+    "supplements": [],
+    "index": null
+  },
+  "checkpoints": {
+    "researchDecision": {
+      "reached": false,
+      "decision": null
+    },
+    "researchApproval": {
+      "reached": false,
+      "approved": false,
+      "selectedTopics": {
+        "historical": [],
+        "market": [],
+        "technical": []
+      }
+    },
+    "gddReview": {
+      "reached": false,
+      "approved": false,
+      "revisionRequests": []
+    },
+    "supplementSelection": {
+      "reached": false,
+      "approved": false,
+      "selectedSupplements": []
+    }
+  },
+  "gameInfo": {
+    "type": null,
+    "genre": null,
+    "theme": null,
+    "targetAudience": null
+  },
+  "config": {
+    "enableWebSearch": true,
+    "parallelResearch": true,
+    "parallelSupplements": true
+  },
+  "errors": [],
+  "warnings": []
+}
