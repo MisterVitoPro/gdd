@@ -52,8 +52,9 @@ jobs:
           from pathlib import Path
 
           expected = {
-              'concept-gatherer', 'deep-dive', 'research-planner', 'historical-researcher',
-              'market-researcher', 'technical-researcher', 'research-vetter', 'gdd-writer',
+              'concept-gatherer', 'interview-video-game', 'interview-tabletop',
+              'research-planner', 'historical-researcher', 'market-researcher',
+              'technical-researcher', 'research-vetter', 'gdd-writer', 'gdd-auditor',
               'supplement-analyzer', 'supplement-writer', 'index-generator',
           }
           found = {p.stem for p in Path('agents').glob('*.md')}
@@ -62,4 +63,33 @@ jobs:
               text = p.read_text()
               assert text.startswith('---\n'), f'{p}: missing frontmatter'
               assert f'name: {p.stem}' in text.split('---\n', 2)[1], f'{p}: name must match filename'
+          PY
+
+      - name: Validate templates and stage names
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          for name in ['gdd_template_video.md', 'gdd_template_tabletop.md',
+                       'interview_protocol.md', 'supplement_templates.md']:
+              assert Path('templates', name).exists(), f'missing templates/{name}'
+
+          stages = [
+              'NOT_STARTED', 'CONCEPT_GATHERING', 'INTERVIEW', 'RESEARCH_DECISION',
+              'RESEARCH_PLANNING', 'RESEARCH_APPROVAL', 'RESEARCH_EXECUTION',
+              'RESEARCH_VETTING', 'GDD_WRITING', 'GDD_AUDIT', 'GDD_REVIEW',
+              'SUPPLEMENT_ANALYSIS', 'SUPPLEMENT_SELECTION', 'SUPPLEMENT_GENERATION',
+              'INDEX_GENERATION', 'COMPLETED',
+          ]
+          create = Path('skills/create/SKILL.md').read_text()
+          for stage in stages:
+              assert stage in create, f'skills/create/SKILL.md does not mention stage {stage}'
+          assert 'DEEP_DIVE' not in create, 'DEEP_DIVE stage was replaced by INTERVIEW'
+
+          for path in Path('.').rglob('*.md'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              assert not re.search(r'[\U0001F300-\U0001FAFF☀-➿]', text), f'{path}: emoji found'
           PY

@@ -48,35 +48,34 @@ Generate the index in this format:
 - **Key Topics**: [comma-separated keywords]
 - **Use When**: Looking for initial game idea, genre, target audience, core loop
 
+### interview-ledger.md
+- **Path**: `./interview-ledger.md`
+- **Generated**: Stages 1-2 - Concept Gathering and Interview
+- **Description**: Every design question asked, the answer, and its status (decided, assumed, open, skipped, superseded), with stable row IDs. [Counts by status.]
+- **Key Topics**: [modules covered]
+- **Use When**: Checking why a decision was made, finding what is still open, or tracing a GDD claim to its source
+
 ### details.md
 - **Path**: `./details.md`
-- **Generated**: Stage 2 - Deep Dive
+- **Generated**: Stage 2 - Interview ([video-game | tabletop] role, [depth] depth)
 - **Description**: [2-3 sentence description]
 - **Key Topics**: [keywords]
-- **Use When**: Looking for detailed mechanics, components, technical requirements
+- **Use When**: Looking for detailed mechanics, components, technical requirements, assumptions, and open questions before reading the full GDD
 
 ### GDD.md
 - **Path**: `./GDD.md`
-- **Generated**: Stage 8 - GDD Writing
-- **Description**: The main Game Design Document containing all 15 sections
+- **Generated**: Stage 8 - GDD Writing (template: [video | tabletop])
+- **Description**: The Game Design Document: pillars, loops, systems, content, presentation, production plan, and appendices (decision log, assumptions, open questions, glossary)
 - **Key Topics**: [keywords based on actual content]
 - **Use When**: Looking for the complete game design, any specific section
-- **Sections**:
-  1. Executive Summary
-  2. Game Concept
-  3. Core Mechanics
-  4. Gameplay Systems
-  5. Progression Systems
-  6. Story & Narrative
-  7. Characters
-  8. World Design
-  9. Visual Style
-  10. Audio Design
-  11. User Interface
-  12. Technical Requirements
-  13. Monetization Strategy
-  14. Marketing Positioning
-  15. Post-Launch Roadmap
+- **Sections**: [list the H2 headings actually present in GDD.md, numbered as they appear]
+
+### gdd-audit.md
+- **Path**: `./gdd-audit.md`
+- **Generated**: Stage 9 - GDD Audit
+- **Description**: Auditor findings on the final draft: traceability gaps, consistency issues, coverage checklist, remaining minor findings
+- **Key Topics**: audit, traceability, coverage
+- **Use When**: Deciding what to fix next in the GDD, or verifying a claim's provenance
 
 ## Research Documents (if generated)
 
@@ -119,7 +118,7 @@ Generate the index in this format:
 
 ### supplement-plan.md
 - **Path**: `./supplement-plan.md`
-- **Generated**: Stage 10 - Supplement Analysis
+- **Generated**: Stage 11 - Supplement Analysis
 - **Description**: Analysis of which supplementary documents are needed
 - **Key Topics**: [keywords]
 - **Use When**: Understanding what supplements were planned and why
@@ -127,7 +126,7 @@ Generate the index in this format:
 ### supplements/[filename].md
 [Repeat for each supplement file with:]
 - **Path**: `./supplements/[filename].md`
-- **Generated**: Stage 12 - Supplement Generation
+- **Generated**: Stage 13 - Supplement Generation
 - **Description**: [specific description based on content]
 - **Key Topics**: [keywords extracted from content]
 - **Use When**: [specific use case for this supplement]
@@ -146,7 +145,8 @@ Generate the index in this format:
 [Group files by common topics/themes found across documents]
 
 ### By Use Case
-- **Starting a new session**: Read `concept.md` and `details.md` first
+- **Starting a new session**: Read `concept.md`, then the Open Questions and Assumptions in `details.md`
+- **Answering "why did we decide X"**: Search `interview-ledger.md` for the topic
 - **Understanding the full game**: Read `GDD.md`
 - **Implementation details**: Check relevant supplements
 - **Market context**: Read `research/market.md` and `research_synthesis.md`
@@ -154,10 +154,11 @@ Generate the index in this format:
 
 ### Recommended Reading Order
 1. `INDEX.md` (this file) - Get overview
-2. `concept.md` - Understand the core idea
-3. `details.md` - Understand detailed design decisions
-4. `GDD.md` - Complete design document
-5. Relevant supplements as needed
+2. `concept.md` - Pitch, pillars, constraints
+3. `GDD.md` - Complete design document
+4. `details.md` and `interview-ledger.md` - Decision provenance, assumptions, open questions
+5. `gdd-audit.md` - Known gaps in the current draft
+6. Relevant supplements as needed
 
 ## File Statistics
 
@@ -195,7 +196,7 @@ Generate the index in this format:
 ```markdown
 ### supplements/plant_card_database.md
 - **Path**: `./supplements/plant_card_database.md`
-- **Generated**: Stage 12 - Supplement Generation
+- **Generated**: Stage 13 - Supplement Generation
 - **Description**: Complete database of all plant cards including stats, abilities, growth stages, and seasonal behaviors. Contains 24 plant entries organized by difficulty tier.
 - **Key Topics**: plants, cards, stats, abilities, growth, seasons, tiers, vegetables, flowers, herbs
 - **Use When**: Looking for specific plant stats, balancing card abilities, implementing plant mechanics

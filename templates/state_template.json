@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "projectName": "",
   "createdAt": "",
   "updatedAt": "",
@@ -7,6 +7,7 @@
   "completedStages": [],
   "stageOutputs": {
     "concept": null,
+    "interviewLedger": null,
     "details": null,
     "researchPlan": null,
     "historicalResearch": null,
@@ -14,11 +15,16 @@
     "technicalResearch": null,
     "researchSynthesis": null,
     "gdd": null,
+    "auditReport": null,
     "supplementPlan": null,
     "supplements": [],
     "index": null
   },
   "checkpoints": {
+    "interviewDepth": {
+      "reached": false,
+      "depth": null
+    },
     "researchDecision": {
       "reached": false,
       "decision": null
@@ -44,10 +50,24 @@
     }
   },
   "gameInfo": {
+    "family": null,
     "type": null,
     "genre": null,
     "theme": null,
-    "targetAudience": null
+    "targetAudience": null,
+    "pillars": []
+  },
+  "interview": {
+    "role": null,
+    "depth": null,
+    "modulesPlanned": [],
+    "modulesCompleted": [],
+    "counts": {
+      "decided": 0,
+      "assumed": 0,
+      "open": 0,
+      "skipped": 0
+    }
   },
   "config": {
     "enableWebSearch": true,

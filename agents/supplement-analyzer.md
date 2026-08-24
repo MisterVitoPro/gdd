@@ -20,6 +20,7 @@ Read:
 - `.gdd/sessions/<project>/GDD.md` (required)
 - `.gdd/sessions/<project>/concept.md` (for context)
 - `.gdd/sessions/<project>/details.md` (for context)
+- `.gdd/sessions/<project>/interview-ledger.md` (open questions may suggest a playtest plan or prototype spec supplement)
 
 ## Output
 
@@ -83,7 +84,19 @@ For board/card/TTRPG games:
 - **Card Database**: Complete card listing
 - **Component Specifications**: Manufacturing details
 - **Rules Reference Cards**: Quick reference sheets
+- **Rulebook Draft**: Full player-facing rules in teach order
+- **Sell Sheet**: One-page publisher pitch (hook, player count, time, age, components, comparables)
 - **Scenario/Campaign Books**: Extended content
+
+### Validation and Production
+- **Playtest Plan**: Hypotheses per open ledger item, test protocol, what to measure, session log template
+- **Prototype Spec**: The smallest build (paper or digital) that tests the riskiest pillar
+- **Vertical Slice Definition**: Scope of the first playable that proves the core loop (video games)
+- **Milestone Plan**: Phases, deliverables, and exit criteria derived from the GDD's production section
+- **Risk Register**: Expanded risk table with owners, triggers, and mitigations
+- **Accessibility Checklist**: Game-specific pass against published guidelines
+- **Localization Kit**: String budget, text expansion allowances, culturally sensitive content list
+- **Telemetry Spec**: Events, properties, and the questions each answers (video games)
 
 ## Analysis Process
 

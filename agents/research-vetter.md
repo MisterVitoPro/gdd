@@ -22,6 +22,8 @@ Read all available research:
 - `.gdd/sessions/<project>/research/technical.md` (if exists)
 - `.gdd/sessions/<project>/concept.md` (for context)
 - `.gdd/sessions/<project>/details.md` (for context)
+- `.gdd/sessions/<project>/interview-ledger.md` (to report which `open` and `assumed` rows the research resolves)
+- `.gdd/sessions/<project>/research-plan.md` (each topic's **Resolves** field)
 
 ## Output
 
@@ -96,6 +98,14 @@ Findings that directly impact core game design:
 [Same structure...]
 
 ---
+
+## Ledger Items Addressed
+
+| Ledger ID | Question | Research answer | Confidence | Recommended status |
+|-----------|----------|-----------------|------------|--------------------|
+| [ID] | [open or assumed question] | [what research found] | High / Medium / Low | resolve as decided / keep assumed with better rationale / still open |
+
+The orchestrator applies these to `interview-ledger.md` before GDD writing (High confidence answers may be recorded as `decided` with `Source: research` in Notes; anything lower stays `assumed` or `open`).
 
 ## Consolidated Recommendations
 
