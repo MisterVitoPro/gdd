@@ -2,13 +2,11 @@
 
 ## Overview
 
-These commands orchestrate the Game Doc Forge pipeline for creating comprehensive Game Design Documents.
+These commands orchestrate the Game Doc Forge pipeline for creating Game Design Documents. Claude Code invokes them as `/gdd:<command>`; Codex as `$gdd:<command>`.
 
 ---
 
 ## Command: `/gdd:create`
-
-### Full Pipeline Execution
 
 **Usage:**
 ```
@@ -16,35 +14,39 @@ These commands orchestrate the Game Doc Forge pipeline for creating comprehensiv
 ```
 
 **Arguments:**
-- `project_name` (optional): Name for this GDD project. If not provided, will prompt for one.
-
-**Description:**
-Runs the complete GDD generation pipeline from initial concept to supplementary documents.
+- `project_name` (optional): Name for this GDD project. If not provided, you will be prompted.
 
 **Process:**
-1. **Concept Gathering**: Interactive Q&A about game fundamentals
-2. **Deep Dive**: Follow-up questions based on game type
-3. **Research Decision Checkpoint**: User chooses to research or skip
-4. **Research Planning**: Identify needed research topics (if enabled)
-5. **Research Approval Checkpoint**: User selects topics (if researching)
-6. **Research Execution**: Parallel web search research (if enabled)
-7. **Research Vetting**: Synthesize and verify findings (if researched)
-8. **GDD Writing**: Generate comprehensive document
-9. **GDD Review Checkpoint**: User reviews document
-10. **Supplement Analysis**: Identify needed supplements
-11. **Supplement Selection Checkpoint**: User selects supplements
-12. **Supplement Generation**: Create selected documents
+1. **Concept Gathering** (inline): game family and type, pitch, comparables, hook, player fantasy and experience goals, design pillars with their cuts, audience, exclusions, purpose, team, budget and timeline, hard constraints, success measure, known unknowns
+2. **Interview** (inline, forked by family): depth checkpoint, then the video-game or tabletop module set
+3. **Research Decision Checkpoint**
+4. **Research Planning** (if enabled): topics prioritized by which open ledger items they can close
+5. **Research Approval Checkpoint**
+6. **Research Execution** (parallel)
+7. **Research Vetting**: synthesis plus a table of ledger items the research resolved
+8. **GDD Writing**: family template, traceability rules
+9. **GDD Audit**: traceability, completeness, consistency, anti-patterns; blocking findings send the writer back once
+10. **GDD Review Checkpoint**
+11. **Supplement Analysis**
+12. **Supplement Selection Checkpoint**
+13. **Supplement Generation** (parallel)
+14. **Index Generation**
 
 **Output:**
 ```
 .gdd/sessions/<project_name>/
-├── state.json
-├── concept.md
-├── details.md
-├── research/ (optional)
-├── research_synthesis.md (optional)
-├── GDD.md
-└── supplements/
+  state.json
+  concept.md
+  interview-ledger.md
+  details.md
+  research-plan.md          (optional)
+  research/                 (optional)
+  research_synthesis.md     (optional)
+  GDD.md
+  gdd-audit.md
+  supplement-plan.md
+  supplements/
+  INDEX.md
 ```
 
 **Example:**
@@ -58,104 +60,104 @@ Runs the complete GDD generation pipeline from initial concept to supplementary 
 
 ## Command: `/gdd:resume`
 
-### Resume Existing Session
-
 **Usage:**
 ```
 /gdd:resume [project_name]
 ```
 
-**Arguments:**
-- `project_name` (required): Name of existing GDD project to resume
-
-**Description:**
-Resume a pipeline from its last checkpoint or completed stage.
-
 **Process:**
-1. Read `state.json` to determine current stage
-2. Display progress summary
-3. Continue from last completed stage
-4. Preserve all previous outputs
+1. Read `state.json`; migrate 1.0 sessions (`DEEP_DIVE` becomes `INTERVIEW`, new keys added)
+2. Display the progress summary including interview coverage
+3. Report partial work (unfinished interview modules, missing research or supplement files)
+4. Offer: continue, restart the current stage, or go back to the previous checkpoint
+5. Continue the pipeline, reusing every existing output
 
-**Example:**
-```
-/gdd:resume stellar-conquest
-```
+For completed sessions, offer instead: resolve open questions, revise the GDD, extend the interview with skipped modules, generate more supplements, or rebuild the index.
 
 ---
 
 ## Command: `/gdd:status`
-
-### Check Pipeline Status
 
 **Usage:**
 ```
 /gdd:status [project_name]
 ```
 
-**Arguments:**
-- `project_name` (required): Name of GDD project to check
-
-**Description:**
-Display current pipeline status and completed stages.
-
 **Output Example:**
 ```
 Pipeline Status: stellar-conquest
 ----------------------
-[x] Concept Gathering    - completed
-[x] Deep Dive Questions  - completed
-[x] Research Decision    - skipped (user chose no research)
-[ ] GDD Writing          - in_progress
-[ ] GDD Review           - pending
-[ ] Supplement Analysis  - pending
-[ ] Supplement Selection - pending
-[ ] Supplement Generation - pending
+Game: video / pc-console - 4X strategy
 
-Current Stage: GDD Writing
-Last Updated: 2024-01-15 14:30:00
+[x] Concept Gathering     - completed
+[x] Interview             - completed (video-game, standard depth, 12/12 modules)
+[-] Research              - skipped (user chose no research)
+[x] GDD Writing           - completed
+[ ] GDD Audit             - in_progress
+[ ] GDD Review            - pending
+[ ] Supplement Analysis   - pending
+[ ] Supplement Selection  - pending
+[ ] Supplement Generation - pending
+[ ] Index Generation      - pending
+
+Interview ledger: 52 decided, 7 assumed, 5 open, 3 skipped
+Current Stage: GDD_AUDIT
+Last Updated: 2026-08-24T18:30:00Z
+Checkpoint decisions: depth=standard, research=skip, gddReview=-, supplements=-
 ```
 
 ---
 
 ## Checkpoint Interactions
 
-### Research Decision Checkpoint
+### Interview Depth Checkpoint
 
-After deep dive questioning, the pipeline presents:
+At the start of the game-type interview:
 
 ```
-Your game concept and details have been captured.
+How deep should this interview go?
+
+1. Quick        - 20-30 questions, ~15 min. Core modules only; everything else
+                  becomes an explicit assumption or open question.
+2. Standard     - 45-70 questions, ~35 min. All applicable modules; secondary
+                  probes where answers are thin.
+3. Comprehensive - 90+ questions, 60+ min. Every module, every probe, plus
+                  genre-specific probes. Aims to leave no GDD section on an assumption.
+
+You can change depth at any time ("go deeper on combat", "speed this up").
+```
+
+During the interview every question also accepts: **you decide** (recorded as an assumption with rationale), **skip** (not applicable), and **later** (recorded as an open question).
+
+### Research Decision Checkpoint
+
+```
+Your concept and interview are captured.
+Open questions research could help resolve: VG-02-05 (rating descriptors),
+VG-13-02 (Switch performance budget), VG-14-04 (comparable wishlist numbers).
 
 Would you like to conduct research before writing the GDD?
 
-Research is recommended if your game involves:
-- Historical periods or real-world settings
-- Technical platforms with specific requirements
-- Competitive markets where you want to understand similar games
-
-Options:
-1. Conduct research (recommended for games with real-world elements)
+1. Conduct research (recommended for real-world settings, specific platforms,
+   crowded markets, or when open questions are factual)
 2. Skip research (proceed directly to GDD writing)
 ```
 
 ### Research Approval Checkpoint
 
-If research is enabled, shows identified topics:
-
 ```
 Research Topics Identified:
 ---------------------------
 Historical/Domain Research:
-  1. [HIGH] Medieval siege warfare tactics
+  1. [HIGH] Medieval siege warfare tactics                (resolves: VG-08-06)
   2. [MEDIUM] Castle architecture and defense
 
 Market Research:
-  1. [HIGH] Tower defense games 2023-2024
+  1. [HIGH] Tower defense games 2025-2026                 (resolves: VG-14-04)
   2. [MEDIUM] Mobile strategy game monetization
 
 Technical Research:
-  1. [HIGH] Unity mobile optimization
+  1. [HIGH] Switch performance budgets for 2D strategy    (resolves: VG-13-02)
   2. [LOW] Cross-platform save systems
 
 Select topics to research:
@@ -167,41 +169,40 @@ Select topics to research:
 
 ### GDD Review Checkpoint
 
-After GDD generation:
-
 ```
 GDD has been generated: .gdd/sessions/<project>/GDD.md
 
 Document Overview:
-- 15 sections completed
-- ~X,XXX words
-- Key sections: [list of major sections]
+- 14 sections, ~9,400 words
+- Pillars: Every death teaches; Ten minutes to learn; The map is the story
+- Consequential decisions: premium at USD 19.99; server-authoritative co-op for 2;
+  checkpoint saves; three difficulty presets plus assists
+- 7 assumptions, 5 open questions carried into the appendices
+- Audit: 0 blocking, 2 major, 4 minor findings remaining (listed below)
 
 Options:
 1. Approve and continue to supplement analysis
-2. Request revisions (specify sections to revise)
-3. Export current state and pause
+2. Request revisions (specify sections)
+3. Answer open questions now
+4. Pause here
 ```
 
 ### Supplement Selection Checkpoint
-
-After supplement analysis:
 
 ```
 Recommended Supplements:
 ------------------------
 [HIGH PRIORITY]
   1. Unit Stats Table - Essential for balance implementation
-  2. Upgrade Tree Documentation - Complex progression system
-  3. Level Progression Chart - Core gameplay loop
+  2. Playtest Plan - Five open items are playtest-dependent
+  3. Vertical Slice Definition - Milestone exit criterion needs scope
 
 [MEDIUM PRIORITY]
   4. Resource Balance Sheet - Economy tuning
-  5. Achievement List - Player motivation
+  5. Accessibility Checklist - Console target
 
 [LOW PRIORITY]
   6. Lore Bible - World building depth
-  7. Sound Effect Catalog - Audio reference
 
 Select supplements to generate:
 - Enter numbers (e.g., "1,2,3")
@@ -214,30 +215,25 @@ Select supplements to generate:
 
 ## State Management
 
-### State File Structure
-
-Pipeline state is tracked in `.gdd/sessions/<project>/state.json`:
+Pipeline state is tracked in `.gdd/sessions/<project>/state.json` (see `templates/state_template.json` for the full schema).
 
 ```json
 {
-  "version": "1.0",
+  "version": "2.0",
   "projectName": "project-name",
-  "createdAt": "ISO timestamp",
-  "updatedAt": "ISO timestamp",
   "currentStage": "STAGE_NAME",
-  "completedStages": ["STAGE_1", "STAGE_2"],
-  "stageOutputs": {
-    "concept": "concept.md",
-    "details": "details.md"
+  "completedStages": ["CONCEPT_GATHERING", "INTERVIEW"],
+  "gameInfo": { "family": "video", "type": "pc-console", "genre": "...", "pillars": ["..."] },
+  "interview": {
+    "role": "interview-video-game",
+    "depth": "standard",
+    "modulesPlanned": ["01", "02", "03", "05", "06", "07", "09", "10", "12", "13", "14", "99"],
+    "modulesCompleted": ["01", "02", "03"],
+    "counts": { "decided": 18, "assumed": 2, "open": 1, "skipped": 0 }
   },
   "checkpoints": {
-    "researchDecision": {
-      "reached": true,
-      "decision": "skip"
-    }
-  },
-  "config": {
-    "enableWebSearch": true
+    "interviewDepth": { "reached": true, "depth": "standard" },
+    "researchDecision": { "reached": false, "decision": null }
   }
 }
 ```
@@ -246,18 +242,39 @@ Pipeline state is tracked in `.gdd/sessions/<project>/state.json`:
 
 - `NOT_STARTED`
 - `CONCEPT_GATHERING`
-- `DEEP_DIVE`
+- `INTERVIEW`
 - `RESEARCH_DECISION`
 - `RESEARCH_PLANNING`
 - `RESEARCH_APPROVAL`
 - `RESEARCH_EXECUTION`
 - `RESEARCH_VETTING`
 - `GDD_WRITING`
+- `GDD_AUDIT`
 - `GDD_REVIEW`
 - `SUPPLEMENT_ANALYSIS`
 - `SUPPLEMENT_SELECTION`
 - `SUPPLEMENT_GENERATION`
+- `INDEX_GENERATION`
 - `COMPLETED`
+
+`DEEP_DIVE` (1.0) is migrated to `INTERVIEW` by `/gdd:resume`.
+
+---
+
+## The Interview Ledger
+
+`interview-ledger.md` records every question asked across the concept and interview stages:
+
+| Column | Meaning |
+|--------|---------|
+| ID | `CG-mm-nn`, `VG-mm-nn`, or `TT-mm-nn` (prefix, module, question); stable, never renumbered |
+| Module | Module number and name |
+| Question | As asked |
+| Answer | The decision in the designer's words |
+| Status | `decided`, `assumed`, `open`, `skipped`, `superseded` |
+| Notes | Rationale for assumptions, partial thinking for open items, supersession pointers |
+
+The GDD writer may not state anything normative without a `decided` or `assumed` row; the auditor enforces this and checks the reverse (every decided row appears in the GDD; every assumed and open row appears in the appendices).
 
 ---
 
@@ -267,41 +284,24 @@ If the pipeline encounters an error:
 
 1. State is saved to allow resume
 2. Error is logged to `state.json`
-3. User is notified with options:
-   - Retry the failed stage
-   - Skip to next stage (if possible)
-   - Abort and save progress
+3. User is notified with options: retry the failed stage, skip to the next stage (if safe), or abort and save progress
+
+An interrupted interview is not an error; the ledger holds every completed module and `/gdd:resume` continues at the next one.
 
 ---
 
 ## Output Files
 
-### concept.md
-Initial game concept including type, genre, theme, audience, and core loop.
-
-### details.md
-Detailed game design information from deep dive questioning.
-
-### research-plan.md
-Identified research topics with priorities and questions.
-
-### research/historical.md
-Historical and domain research findings.
-
-### research/market.md
-Market analysis and competitor research.
-
-### research/technical.md
-Technical requirements and platform research.
-
-### research_synthesis.md
-Consolidated and verified research insights.
-
-### GDD.md
-Complete Game Design Document with all 15 sections.
-
-### supplement-plan.md
-Analysis of recommended supplementary documents.
-
-### supplements/*.md
-Individual supplementary documents as selected.
+| File | Contents |
+|------|----------|
+| `concept.md` | Pitch, key facts, hook, player experience, pillars, audience, exclusions, known unknowns, constraints |
+| `interview-ledger.md` | Every question with answer and status |
+| `details.md` | Synthesized design details by module, plus Assumptions and Open Questions |
+| `research-plan.md` | Research topics with priorities and the ledger items each resolves |
+| `research/*.md` | Historical, market, technical findings |
+| `research_synthesis.md` | Consolidated research with confidence levels and ledger items addressed |
+| `GDD.md` | The Game Design Document (video or tabletop template) |
+| `gdd-audit.md` | Audit findings, coverage checklist, reverse traceability gaps |
+| `supplement-plan.md` | Recommended supplements with priorities |
+| `supplements/*.md` | Generated supplements |
+| `INDEX.md` | Catalog of every file with descriptions and reading order |

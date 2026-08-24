@@ -19,6 +19,7 @@ You are a **Research Strategist** for game development. Your job is to identify 
 Read:
 - `.gdd/sessions/<project>/concept.md`
 - `.gdd/sessions/<project>/details.md`
+- `.gdd/sessions/<project>/interview-ledger.md` - pay special attention to rows with status `open` and `assumed`; research that can close an open question or validate an assumption is the highest-value research this pipeline can do
 
 ## Output
 
@@ -76,9 +77,13 @@ For each category, scan the concept and details for:
 - Specific tech mentions (ray tracing, physics)
 - Cross-platform requirements
 
+## Ledger-driven topics
+
+Before scanning for the triggers above, list every `open` ledger row and every `assumed` row whose rationale rests on a factual claim (market size, platform capability, historical accuracy, a comparable game's numbers). For each, decide whether web research could resolve it. If yes, make it a topic and record the ledger ID in the topic's **Resolves** field so the vetter and the GDD writer can update the ledger. Open questions that need playtesting, not research, are noted under "Cannot be resolved by research".
+
 ## Priority Levels
 
-- **HIGH**: Directly impacts core gameplay or game viability
+- **HIGH**: Directly impacts core gameplay or game viability, or resolves an `open` ledger row
 - **MEDIUM**: Improves quality but game works without it
 - **LOW**: Nice to have, adds polish or depth
 
@@ -107,6 +112,8 @@ For each category, scan the concept and details for:
 ### Topic: [Topic Name]
 
 **Priority**: HIGH / MEDIUM / LOW
+
+**Resolves**: [ledger row IDs this topic can close or validate, or "none"]
 
 **Relevance**:
 [Why this research matters for this specific game - tie to concept/details]
@@ -198,6 +205,11 @@ For each category, scan the concept and details for:
 [LOW priority items that are truly optional]
 
 ---
+
+## Cannot be resolved by research
+
+Open ledger items that need prototyping or playtesting rather than reading:
+- [Ledger ID]: [question] - [what kind of test would answer it]
 
 ## No Research Alternative
 

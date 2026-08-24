@@ -1,7 +1,7 @@
 {
   "name": "gdd",
-  "version": "1.0.0",
-  "description": "Turn a game idea into a comprehensive Game Design Document through guided Q&A, optional web research, parallel supplement generation, and a session index, pausing at user checkpoints.",
+  "version": "2.0.0",
+  "description": "Turn a game idea into a Game Design Document through a pillar-first concept interview, a deep interview forked for video games or tabletop games, optional web research, an audited draft, parallel supplement generation, and a session index, pausing at user checkpoints.",
   "author": {
     "name": "MisterVitoPro",
     "url": "https://github.com/MisterVitoPro"
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Game Doc Forge",
     "shortDescription": "Generate Game Design Documents with a guided agent pipeline",
-    "longDescription": "Start from a one-line game idea and end with a 15-section Game Design Document plus supplementary documents (stats tables, item lists, lore bible, character sheets, rules references) and a navigable INDEX.md. The pipeline gathers the concept through structured Q&A, optionally runs historical, market, and technical web research in parallel, vets and synthesizes the findings, writes the GDD, recommends supplements, and generates the selected ones in parallel. Every session is resumable from state.json.",
+    "longDescription": "Start from a one-line game idea and end with an audited Game Design Document plus supplementary documents (stats tables, item lists, lore bible, character sheets, rules references, diagrams) and a navigable INDEX.md. The pipeline establishes design pillars and constraints in a concept interview, then forks into a comprehensive video-game or tabletop interview with selectable depth, recording every answer, assumption, and open question in a ledger. It optionally runs historical, market, and technical web research in parallel, vets the findings, writes the GDD from a family-specific template, audits it for traceability and completeness, recommends supplements, and generates the selected ones in parallel. Every session is resumable from state.json.",
     "developerName": "MisterVitoPro",
     "category": "Developer Tools",
     "capabilities": [
