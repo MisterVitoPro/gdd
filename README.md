@@ -19,8 +19,9 @@ Part of the [MisterVitoPro Plugin Marketplace](https://github.com/MisterVitoPro/
 claude plugin marketplace add MisterVitoPro/qa-claude-market
 claude plugin install gdd@esper
 
-# Local development (any host): point the plugin loader at this directory
-claude --plugin-dir D:\agent_plugins\gdd
+# Local development: clone this repo and point the plugin loader at it
+git clone https://github.com/MisterVitoPro/gdd.git
+claude --plugin-dir ./gdd
 ```
 
 Then, inside a project:
