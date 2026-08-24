@@ -1,0 +1,65 @@
+name: Validate plugin
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON and synchronized versions
+        run: |
+          python3 -m json.tool .claude-plugin/plugin.json > /dev/null
+          python3 -m json.tool .codex-plugin/plugin.json > /dev/null
+          python3 -m json.tool templates/state_template.json > /dev/null
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          claude = json.loads(Path('.claude-plugin/plugin.json').read_text())
+          codex = json.loads(Path('.codex-plugin/plugin.json').read_text())
+          assert claude['name'] == codex['name'] == 'gdd'
+          assert claude['version'] == codex['version']
+          PY
+
+      - name: Validate Codex skill frontmatter
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          allowed = {'name', 'description', 'allowed-tools', 'license', 'metadata'}
+          for skill in Path('skills').glob('*/SKILL.md'):
+              text = skill.read_text()
+              assert text.startswith('---\n'), f'{skill}: missing frontmatter'
+              frontmatter = text.split('---\n', 2)[1]
+              keys = {
+                  line.split(':', 1)[0]
+                  for line in frontmatter.splitlines()
+                  if line and not line[0].isspace() and ':' in line
+              }
+              assert keys <= allowed, f'{skill}: unsupported keys {keys - allowed}'
+              assert f'name: {skill.parent.name}' in frontmatter, f'{skill}: name must match folder'
+          PY
+
+      - name: Validate agent role files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          expected = {
+              'concept-gatherer', 'deep-dive', 'research-planner', 'historical-researcher',
+              'market-researcher', 'technical-researcher', 'research-vetter', 'gdd-writer',
+              'supplement-analyzer', 'supplement-writer', 'index-generator',
+          }
+          found = {p.stem for p in Path('agents').glob('*.md')}
+          assert found == expected, f'agent set mismatch: missing {expected - found}, extra {found - expected}'
+          for p in Path('agents').glob('*.md'):
+              text = p.read_text()
+              assert text.startswith('---\n'), f'{p}: missing frontmatter'
+              assert f'name: {p.stem}' in text.split('---\n', 2)[1], f'{p}: name must match filename'
+          PY
