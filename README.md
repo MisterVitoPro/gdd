@@ -1,8 +1,8 @@
-# Game Doc Forge (`gdd`)
+# Game Doc Forge (`gdd`)  ![version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FMisterVitoPro%2Fgdd%2Fmain%2F.claude-plugin%2Fplugin.json&query=%24.version&label=version&color=blue)
 
 A Claude Code and Codex plugin that turns a game idea into a Game Design Document a team can build from. The pipeline runs a pillar-first concept interview, forks into a comprehensive video-game or tabletop interview, optionally researches the web, writes the GDD from a family-specific template, audits it for traceability and completeness, generates supplementary documents, and builds a session index. Works for video games, board games, card games, dice and party games, miniatures games, and tabletop RPGs.
 
-Part of the [MisterVitoPro Plugin Marketplace](https://github.com/MisterVitoPro/qa-claude-market).
+Part of the [game-dev-2d marketplace](https://github.com/MisterVitoPro/game-dev-2d).
 
 ## What is different about 2.0
 
@@ -20,8 +20,8 @@ Version 2.0 rebuilt the plugin around research into what makes design documents 
 
 ```bash
 # Claude Code
-claude plugin marketplace add MisterVitoPro/qa-claude-market
-claude plugin install gdd@esper
+claude plugin marketplace add MisterVitoPro/game-dev-2d
+claude plugin install gdd@game-dev-2d
 
 # Local development: clone this repo and point the plugin loader at it
 git clone https://github.com/MisterVitoPro/gdd.git
