@@ -23,6 +23,10 @@ Version 2.0 rebuilt the plugin around research into what makes design documents 
 claude plugin marketplace add MisterVitoPro/game-dev-2d
 claude plugin install gdd@game-dev-2d
 
+# Codex
+codex plugin marketplace add MisterVitoPro/game-dev-2d
+codex plugin add gdd@game-dev-2d
+
 # Local development: clone this repo and point the plugin loader at it
 git clone https://github.com/MisterVitoPro/gdd.git
 claude --plugin-dir ./gdd

@@ -16,4 +16,4 @@
 - Stage names are fixed in `skills/create/SKILL.md` and checked by CI. `DEEP_DIVE` was replaced by `INTERVIEW` in 2.0; `resume` migrates 1.0 sessions.
 - No emojis in any file.
 - Run `claude plugin validate . --strict` and the workflow checks in `.github/workflows/validate.yml` before releasing.
-- Release with an immutable plain `v<version>` tag. The plugin is published through the `game-dev-2d` marketplace (https://github.com/MisterVitoPro/game-dev-2d), which registers it by `github` source tracking `main`, so bump the version in both manifests before merging to `main`; the README version badges read `.claude-plugin/plugin.json` live.
+- Release with an immutable plain `v<version>` tag. The plugin is published through the `game-dev-2d` marketplace (https://github.com/MisterVitoPro/game-dev-2d): its Claude Code catalog registers this repo by `github` source tracking `main` (bump the version in both manifests before merging; the README version badges read `.claude-plugin/plugin.json` live), and its Codex catalog (`.agents/plugins/marketplace.json`) pins the `v<version>` tag and commit SHA, so bump that pin after every release.
