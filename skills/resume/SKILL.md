@@ -18,7 +18,7 @@ Treat the text supplied with the skill invocation as the project name. If none w
 3. Print the progress table in the format used by `../status/SKILL.md` (completed, skipped, in progress, pending stages plus interview coverage, current stage, and last update).
 4. Check for partial work at the current stage:
    - `INTERVIEW`: compare `interview.modulesCompleted` against `interview.modulesPlanned` and report which modules remain. The interview resumes at the first unfinished module, reusing every row already in `interview-ledger.md`.
-   - `RESEARCH_EXECUTION`, `SUPPLEMENT_GENERATION`: compare the expected outputs against the files actually present and report which are missing.
+   - `RESEARCH_EXECUTION`, `SUPPLEMENT_GENERATION`, `HTML_GENERATION`: compare the expected outputs against the files actually present and report which are missing.
 5. Ask the user, with the host's structured-input facility when available:
    1. Continue from the current stage
    2. Restart the current stage (re-run it and overwrite its outputs)
@@ -32,5 +32,6 @@ If `currentStage` is already `COMPLETED`, offer instead to:
 - **Extend the interview**: run one or more modules that were skipped at the chosen depth (list them from `modulesPlanned` versus the role file's full module list), then revise the GDD as above.
 - **Generate additional supplements**: re-run `SUPPLEMENT_SELECTION` with the remaining items from `supplement-plan.md`.
 - **Rebuild INDEX.md**.
+- **Generate or refresh the HTML reading edition**: follow `../html/SKILL.md`. Safe to run repeatedly; it overwrites `html/` and does not alter `currentStage` on a `COMPLETED` session.
 
-After any of these, re-run `INDEX_GENERATION` so the index stays accurate, and append a row to the GDD's Document History table describing the revision.
+After any of these, re-run `INDEX_GENERATION` so the index stays accurate, and append a row to the GDD's Document History table describing the revision. If `html/` exists, regenerate it too - stale HTML that disagrees with the Markdown is worse than no HTML.

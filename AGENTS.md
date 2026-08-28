@@ -13,7 +13,9 @@
 - `docs/gdd-best-practices.md` records the research behind the template and interview design, with sources. Update it when the rationale changes; the writer and auditor read it.
 - Do not add a `commands/` directory: Claude Code registers every Markdown file there as a slash command. The command reference lives in `docs/commands.md`.
 - Runtime output always lands in `.gdd/sessions/<project>/` under the user's working directory; the plugin never writes elsewhere.
-- Stage names are fixed in `skills/create/SKILL.md` and checked by CI. `DEEP_DIVE` was replaced by `INTERVIEW` in 2.0; `resume` migrates 1.0 sessions.
+- Stage names are fixed in `skills/create/SKILL.md` and checked by CI. `DEEP_DIVE` was replaced by `INTERVIEW` in 2.0; `resume` migrates 1.0 sessions. `HTML_DECISION` and `HTML_GENERATION` were added in 2.1 and are optional - a session that skips them is still `COMPLETED`.
+- The CI agent-set assertion is exact: adding or renaming a file in `agents/` fails the build until `.github/workflows/validate.yml` is updated to match.
+- Generated HTML must stay self-contained (no CDN, no webfont, no network asset) and must never contradict its source Markdown. The Markdown is the record; the HTML is a reading surface over it.
 - No emojis in any file.
 - Run `claude plugin validate . --strict` and the workflow checks in `.github/workflows/validate.yml` before releasing.
 - Release with an immutable plain `v<version>` tag. The plugin is published through the `game-dev-2d` marketplace (https://github.com/MisterVitoPro/game-dev-2d): its Claude Code catalog registers this repo by `github` source tracking `main` (bump the version in both manifests before merging; the README version badges read `.claude-plugin/plugin.json` live), and its Codex catalog (`.agents/plugins/marketplace.json`) pins the `v<version>` tag and commit SHA, so bump that pin after every release.

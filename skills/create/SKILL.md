@@ -36,6 +36,8 @@ Subagents cannot talk to the user, so roles split two ways:
 | `supplement-analyzer` | Dispatch as subagent | Analysis |
 | `supplement-writer` | Dispatch as subagents, one per selected supplement, in parallel | Long-form writing |
 | `index-generator` | Dispatch as subagent | Cataloging |
+| `html-designer` | Dispatch as subagents, one per document, in parallel | Document conversion |
+| `html-hub-designer` | Dispatch as subagent | Hub and flow synthesis |
 
 Use the host's native subagent facility for dispatched roles. Parallelize independent roles in one batch when the host supports it. Use an available structured-input facility (`AskUserQuestion` in Claude Code, `request_user_input` in Codex) for checkpoints and inline Q&A; when none exists, ask the same numbered options in concise prose and wait for the answer. The inline roles all follow `templates/interview_protocol.md`; read it once before Stage 1.
 
@@ -66,7 +68,7 @@ Create the directory and initialize `state.json` from `../../templates/state_tem
 
 **Always update `state.json`:** before starting a stage, after completing a stage, after each interview module, when the user makes a checkpoint decision, and on any error. Write ISO timestamps to `updatedAt`.
 
-Stage names, in order: `NOT_STARTED`, `CONCEPT_GATHERING`, `INTERVIEW`, `RESEARCH_DECISION`, `RESEARCH_PLANNING`, `RESEARCH_APPROVAL`, `RESEARCH_EXECUTION`, `RESEARCH_VETTING`, `GDD_WRITING`, `GDD_AUDIT`, `GDD_REVIEW`, `SUPPLEMENT_ANALYSIS`, `SUPPLEMENT_SELECTION`, `SUPPLEMENT_GENERATION`, `INDEX_GENERATION`, `COMPLETED`.
+Stage names, in order: `NOT_STARTED`, `CONCEPT_GATHERING`, `INTERVIEW`, `RESEARCH_DECISION`, `RESEARCH_PLANNING`, `RESEARCH_APPROVAL`, `RESEARCH_EXECUTION`, `RESEARCH_VETTING`, `GDD_WRITING`, `GDD_AUDIT`, `GDD_REVIEW`, `SUPPLEMENT_ANALYSIS`, `SUPPLEMENT_SELECTION`, `SUPPLEMENT_GENERATION`, `INDEX_GENERATION`, `HTML_DECISION`, `HTML_GENERATION`, `COMPLETED`.
 
 ## Pipeline
 
@@ -148,9 +150,26 @@ Dispatch one `supplement-writer` per selected supplement in a single batch. Each
 ### 14. INDEX_GENERATION (dispatch)
 - Role: `index-generator`. Input: every file in the session directory plus `state.json`.
 - Output: `INDEX.md`
-- Next: COMPLETED
+- Next: HTML_DECISION
 
-### 15. COMPLETED
+### 15. HTML_DECISION (checkpoint)
+
+Offer the HTML reading edition: a hub page, a game-flow page rendering the core loop and economy as diagrams, the GDD, and every supplement - all self-contained pages that open in a browser with no server and no connection. Ask:
+
+1. Generate the HTML edition (recommended when the documents will be read or shared by anyone other than the author)
+2. Skip it - the Markdown is enough
+
+Record `checkpoints.htmlDecision`. Generate -> HTML_GENERATION. Skip -> COMPLETED, and mention that `/gdd:html <project>` can produce it later at any time.
+
+### 16. HTML_GENERATION (dispatch, parallel)
+
+Follow `skills/html/SKILL.md`. In brief: build the page manifest and one shared `{{NAV}}` fragment, then dispatch one `html-designer` per document (GDD and each supplement) plus one `html-hub-designer` for `index.html` and `game-flow.html`, all in a single batch. Each agent gets the absolute path of `templates/html_shell.html`, the shared nav, its source path, and its exact output path.
+
+Output: `html/index.html`, `html/game-flow.html`, `html/gdd.html`, `html/<supplement>.html`. Record the file list in `stageOutputs.htmlGeneration`.
+
+Verify on disk before reporting: no file contains a literal `{{`, no page references a network asset, every nav link resolves. Next: COMPLETED.
+
+### 17. COMPLETED
 Set `currentStage` to `COMPLETED` and print the completion summary below.
 
 ## Dispatch prompt template
@@ -200,6 +219,7 @@ On any failure: append to `state.json` `errors` (stage, message, timestamp), tel
 - GDD.md - the Game Design Document
 - gdd-audit.md - audit findings on the final draft
 - supplements/ - {count} supplementary documents
+- html/ - browser reading edition, {html_count} pages (if generated)
 
 ### Session location
 .gdd/sessions/{project_name}/

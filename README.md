@@ -46,6 +46,7 @@ $gdd:create my-game        # Codex
 | `/gdd:create [project]` | Run the full pipeline for a new project |
 | `/gdd:resume [project]` | Continue an interrupted session, answer open questions, extend the interview, or revise |
 | `/gdd:status [project]` | Read-only progress report for a session (or list all sessions) |
+| `/gdd:html [project]` | Render a session as self-contained HTML: hub, game-flow diagrams, GDD, and every supplement |
 
 Full reference, checkpoint prompts, and state schema: [docs/commands.md](docs/commands.md).
 
@@ -218,6 +219,7 @@ The three interview roles run inline in the main session because they talk to th
 - **Interview method**: edit `templates/interview_protocol.md`
 - **GDD structure**: edit the family template, then the matching section guide in `agents/gdd-writer.md` and the coverage checklist in `docs/gdd-best-practices.md`
 - **New supplement types**: add a template to `templates/supplement_templates.md` and teach `agents/supplement-analyzer.md` to recommend it
+- **HTML look and feel**: edit `templates/html_shell.html`. It is the single source of styling for every generated page - the roles fill its placeholders and are told never to fork its CSS, so one edit restyles the whole set. Adding a placeholder means updating the token list in `.github/workflows/validate.yml` too
 
 ## Upgrading from 1.0
 
