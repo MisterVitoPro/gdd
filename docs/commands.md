@@ -31,6 +31,8 @@ These commands orchestrate the Game Doc Forge pipeline for creating Game Design 
 12. **Supplement Selection Checkpoint**
 13. **Supplement Generation** (parallel)
 14. **Index Generation**
+15. **HTML Decision Checkpoint**
+16. **HTML Generation** (parallel): hub, game-flow diagrams, GDD, and every supplement as self-contained pages
 
 **Output:**
 ```
@@ -305,3 +307,43 @@ An interrupted interview is not an error; the ledger holds every completed modul
 | `supplement-plan.md` | Recommended supplements with priorities |
 | `supplements/*.md` | Generated supplements |
 | `INDEX.md` | Catalog of every file with descriptions and reading order |
+
+---
+
+## Command: `/gdd:html`
+
+**Usage:**
+```
+/gdd:html [project_name]
+```
+
+**Arguments:**
+- `project_name` (optional): the session to render. If omitted, lists the available sessions and asks.
+
+**What it does:**
+
+Converts a session's Markdown into a browser reading edition. The Markdown stays the record; the HTML is the reading surface, and the two say the same thing.
+
+1. Inventories the session and builds a page manifest ordered by reading priority
+2. Generates one shared sidebar navigation so every page agrees
+3. Dispatches, in one parallel batch: one `html-designer` per document, plus one `html-hub-designer` for the hub and the game-flow page
+4. Verifies on disk that no placeholder survived, no page reaches the network, and every nav link resolves
+
+**Output:**
+```
+.gdd/sessions/<project_name>/html/
+  index.html          hub: pitch, pillars, project state, document cards, reading paths, open questions
+  game-flow.html      core loop, timescales, match structure, economy sources and sinks, progression
+  gdd.html            the full Game Design Document
+  <supplement>.html   one per supplement
+```
+
+**Properties:**
+- **Self-contained.** No CDN, no webfont, no network asset. Pages open from `file://` with no server and no connection - they survive being emailed, put on a USB stick, or opened on a plane.
+- **Theme-aware.** Light and dark, following the OS, with a toggle that overrides in either direction.
+- **Responsive and printable.** The sidebar collapses on narrow screens; print drops the chrome.
+- **Re-runnable.** Regenerates every page. Edit the Markdown, run it again.
+
+**Requires:** `GDD.md` must exist. Before that there is nothing worth rendering; the skill says so and points at `/gdd:resume`.
+
+**Note:** the `game-flow.html` page is the only page that is a synthesis rather than a conversion. It gathers the core loop, match structure, economy, and progression - which live as prose scattered across several GDD sections - and renders them as diagrams. It is also the only stage that looks at the design that way, so it occasionally surfaces a hole the prose hid, such as a resource with no sink or a loop that does not close.

@@ -1,6 +1,6 @@
 {
   "name": "gdd",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Turn a game idea into a Game Design Document through a pillar-first concept interview, a deep interview forked for video games or tabletop games, optional web research, an audited draft, parallel supplement generation, and a session index, pausing at user checkpoints.",
   "author": {
     "name": "MisterVitoPro",

@@ -1,7 +1,7 @@
 {
   "name": "gdd",
   "description": "Game Doc Forge: multi-agent pipeline that turns a game idea into a Game Design Document built on design pillars, a forked video-game or tabletop deep interview, optional web research, an audited draft with decision log and open questions, supplementary documents, and a session index. Video games, board games, card games, and tabletop RPGs.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": {
     "name": "MisterVitoPro"
   },

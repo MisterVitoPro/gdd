@@ -56,6 +56,7 @@ jobs:
               'research-planner', 'historical-researcher', 'market-researcher',
               'technical-researcher', 'research-vetter', 'gdd-writer', 'gdd-auditor',
               'supplement-analyzer', 'supplement-writer', 'index-generator',
+              'html-designer', 'html-hub-designer',
           }
           found = {p.stem for p in Path('agents').glob('*.md')}
           assert found == expected, f'agent set mismatch: missing {expected - found}, extra {found - expected}'
@@ -72,15 +73,29 @@ jobs:
           from pathlib import Path
 
           for name in ['gdd_template_video.md', 'gdd_template_tabletop.md',
-                       'interview_protocol.md', 'supplement_templates.md']:
+                       'interview_protocol.md', 'supplement_templates.md',
+                       'html_shell.html']:
               assert Path('templates', name).exists(), f'missing templates/{name}'
+
+          # The HTML shell is filled by placeholder substitution, and a page that
+          # ships an unreplaced token is a visible defect. Guard the token set here
+          # so renaming one in the shell without updating the roles fails loudly.
+          shell = Path('templates/html_shell.html').read_text(encoding='utf-8')
+          for token in ['{{TITLE}}', '{{DOC_TITLE}}', '{{KICKER}}', '{{SUBTITLE}}',
+                        '{{META}}', '{{NAV}}', '{{TOC}}', '{{CONTENT}}',
+                        '{{FOOTER}}', '{{PROJECT}}']:
+              assert token in shell, f'html_shell.html is missing {token}'
+
+          # Pages must open from file:// with no connection.
+          for bad in ['cdn.', 'googleapis', 'unpkg', '@import url(http']:
+              assert bad not in shell, f'html_shell.html references a network asset: {bad}'
 
           stages = [
               'NOT_STARTED', 'CONCEPT_GATHERING', 'INTERVIEW', 'RESEARCH_DECISION',
               'RESEARCH_PLANNING', 'RESEARCH_APPROVAL', 'RESEARCH_EXECUTION',
               'RESEARCH_VETTING', 'GDD_WRITING', 'GDD_AUDIT', 'GDD_REVIEW',
               'SUPPLEMENT_ANALYSIS', 'SUPPLEMENT_SELECTION', 'SUPPLEMENT_GENERATION',
-              'INDEX_GENERATION', 'COMPLETED',
+              'INDEX_GENERATION', 'HTML_DECISION', 'HTML_GENERATION', 'COMPLETED',
           ]
           create = Path('skills/create/SKILL.md').read_text()
           for stage in stages:

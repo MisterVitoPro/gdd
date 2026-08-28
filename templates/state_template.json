@@ -18,7 +18,8 @@
     "auditReport": null,
     "supplementPlan": null,
     "supplements": [],
-    "index": null
+    "index": null,
+    "htmlGeneration": []
   },
   "checkpoints": {
     "interviewDepth": {
@@ -47,6 +48,10 @@
       "reached": false,
       "approved": false,
       "selectedSupplements": []
+    },
+    "htmlDecision": {
+      "reached": false,
+      "decision": null
     }
   },
   "gameInfo": {
